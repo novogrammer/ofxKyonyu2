@@ -1,0 +1,8 @@
+# xcode
+**/*.xcodeproj/*
+!**/*.xcodeproj/project.pbxproj
+
+# osx
+.DS_Store
+/example/bin/exampleDebug.app
+/example/bin/example.app

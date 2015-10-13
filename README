@@ -1,0 +1,29 @@
+巨乳ライブラリ2
+
+ofxOpenNIを使って巨乳を出せるライブラリです。
+今のところ汎用性はありません。
+ofxNI2で動くようにしました。
+
+
+動作環境:
+・mac ofxNI2が動けばOK、Mavericksで確認。
+・win 未確認、ofxNI2次第で大丈夫なはず。
+・Xtion PRO LIVE 多分Kinectも
+
+動かし方:
+・ofxNI2のサンプルが動く環境を作る
+・exampleで遊ぶ
+
+必要なライブラリ
+・openFrameworks v0.8.4
+
+追加するaddon
+・ofxKyonyu2
+・ofxNI2（SolitaryCipher版で確認）
+  https://github.com/SolitaryCipher/ofxNI2
+
+License:
+	Free to use under the New BSD license.
+
+Credit:
+  http://kn.2ngen.jp/
