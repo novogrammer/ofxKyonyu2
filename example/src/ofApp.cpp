@@ -152,7 +152,12 @@ void ofApp::drawUsers(){
             const int OP_QTY=2;
             const nite::SkeletonJoint& torsoJoint=user->getJoint(nite::JOINT_TORSO).get();
             bool isConfidence=torsoJoint.getOrientationConfidence()>CONFIDENCE_FACTOR_FOR_CAPTURE && torsoJoint.getPositionConfidence()>CONFIDENCE_FACTOR_FOR_CAPTURE;
-            if(isConfidence){
+            ofQuaternion q=toOrientation(torsoJoint);
+            ofVec3f front(0,0,1);
+            ofVec3f frontTorso=q*front;
+            float angleTorso=front.angle(frontTorso);
+            
+            if(isConfidence && angleTorso<CAPTURE_ERROR_RANGE_DEG){
                 ofMatrix4x4 torsoMatrix=toMatrix(torsoJoint);
                 
                 vector<ofTexture> textures(OP_QTY,ofTexture());
@@ -212,14 +217,16 @@ ofVec3f ofApp::toPosition(const nite::SkeletonJoint& joint){
     nite::Point3f position=joint.getPosition();
     return ofVec3f(position.x,position.y,-position.z);//DX to GL
 }
+ofQuaternion ofApp::toOrientation(const nite::SkeletonJoint& joint){
+    nite::Quaternion nq=joint.getOrientation();
+    return ofQuaternion(-nq.x,-nq.y,nq.z,nq.w);//DX to GL
+}
 
 
 ofMatrix4x4 ofApp::toMatrix(const nite::SkeletonJoint& joint){
     ofMatrix4x4 m;
     
-    nite::Quaternion nq=joint.getOrientation();
-    ofQuaternion q(-nq.x,-nq.y,nq.z,nq.w);//DX to GL
-    
+    ofQuaternion q=toOrientation(joint);
     m.rotate(q);
     
     nite::Point3f position=joint.getPosition();
@@ -280,13 +287,13 @@ void ofApp::draw(){
     if(0==depthPixels.size()){
         return;
     }
+    const ofPixels& colorPixels=mColorStream.getPixelsRef();
+    mColorImage.setFromPixels(colorPixels);
     mFbo.begin();
     ofClear(0,0,0);
     if(mCanDisplayDebug){
         const ofShortPixels& depthPixelsForDebug=mDepthStream.getPixelsRef(1000,4000);
         mDepthImage.setFromPixels(depthPixelsForDebug);
-        const ofPixels& colorPixels=mColorStream.getPixelsRef();
-        mColorImage.setFromPixels(colorPixels);
         ofPushStyle();
         // draw depth
         ofSetColor(255);

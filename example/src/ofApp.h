@@ -17,7 +17,7 @@
 #define CONFIDENCE_FACTOR 0.3
 #define CONFIDENCE_FACTOR_FOR_CAPTURE 0.6
 #define KANSETSU_RADIUS 150
-#define CAPTURE_ERROR_RANGE_DEG 5
+#define CAPTURE_ERROR_RANGE_DEG 7
 #define OP_TEXTURE_WIDTH 256
 #define OP_TEXTURE_HEIGHT 256
 #define POINT_SIZE_FACTOR 1.5
@@ -65,6 +65,7 @@ private:
     void drawPointCloud();
     void drawUsers();
     ofVec3f toPosition(const nite::SkeletonJoint& joint);
+    ofQuaternion toOrientation(const nite::SkeletonJoint& joint);
     ofMatrix4x4 toMatrix(const nite::SkeletonJoint& joint);
     ofVec3f toWorld(int x,int y,short depth){
         ofVec3f v;
