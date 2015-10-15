@@ -386,7 +386,11 @@ void ofApp::draw(){
     }
     mFbo.end();
     
-    mFbo.draw(0,0,ofGetWidth(),ofGetHeight());
+    ofRectangle winRect(0,0,ofGetWidth(),ofGetHeight());
+    ofRectangle fboRect(0,0,mFbo.getWidth(),mFbo.getHeight());
+    mFbo.draw(ofRectangle_contain(fboRect,winRect));
+    //mFbo.draw(ofRectangle_cover(fboRect,winRect));
+    //mFbo.draw(0,0,ofGetWidth(),ofGetHeight());
     
 
 }

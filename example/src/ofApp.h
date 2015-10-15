@@ -106,3 +106,38 @@ public:
     
 		
 };
+
+//ofRectangleにこのメソッド欲しいなー
+inline ofRectangle ofRectangle_contain(const ofRectangle& _this,const ofRectangle& target){
+    ofRectangle rect=target;
+    float thisAspectRatio=_this.getAspectRatio();
+    float targetAspectRatio=target.getAspectRatio();
+    if(thisAspectRatio<targetAspectRatio){
+        //横が余る
+        rect.width=target.height*thisAspectRatio;
+        rect.x=(target.width-rect.width)*0.5f;
+    }else{
+        //縦が余る
+        rect.height=target.width/thisAspectRatio;
+        rect.y=(target.height-rect.height)*0.5f;
+    }
+    return rect;
+}
+//ofRectangleにこのメソッド欲しいなー
+inline ofRectangle ofRectangle_cover(const ofRectangle& _this,const ofRectangle& target){
+    ofRectangle rect=target;
+    float thisAspectRatio=_this.getAspectRatio();
+    float targetAspectRatio=target.getAspectRatio();
+    if(thisAspectRatio<targetAspectRatio){
+        //縦がはみ出る
+        rect.height=target.width/thisAspectRatio;
+        rect.y=(target.height-rect.height)*0.5f;
+    }else{
+        //横がはみ出る
+        rect.width=target.height*thisAspectRatio;
+        rect.x=(target.width-rect.width)*0.5f;
+    }
+    return rect;
+}
+
+
