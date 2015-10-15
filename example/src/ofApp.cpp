@@ -3,11 +3,6 @@
 
 void ofApp::setupNI2(){
     mDevice.setup();
-    openni::Device &device=mDevice.get();
-    if(!device._getHandle()){
-        cout << "device handle is NULL" << endl;
-        ofExit();
-    }
     if(mColorStream.setup(mDevice)){
         mColorStream.setSize(BUFFER_WIDTH, BUFFER_HEIGHT);
         mColorStream.setFps(FPS);
