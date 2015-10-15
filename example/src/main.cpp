@@ -3,7 +3,7 @@
 
 //========================================================================
 int main( ){
-    ofSetupOpenGL(BUFFER_WIDTH*2,BUFFER_HEIGHT*2,OF_WINDOW);			// <-------- setup the GL context
+    ofSetupOpenGL(BUFFER_WIDTH,BUFFER_HEIGHT,OF_WINDOW);			// <-------- setup the GL context
 
 	// this kicks off the running of my app
 	// can be OF_WINDOW or OF_FULLSCREEN

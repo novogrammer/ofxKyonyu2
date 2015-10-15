@@ -9,10 +9,10 @@
 
 #define FPS 30
 #define INV_FPS 1.0/FPS
-#define BUFFER_WIDTH 320
-#define BUFFER_HEIGHT 240
-//#define BUFFER_WIDTH 640
-//#define BUFFER_HEIGHT 480
+//#define BUFFER_WIDTH 320
+//#define BUFFER_HEIGHT 240
+#define BUFFER_WIDTH 640
+#define BUFFER_HEIGHT 480
 
 #define CONFIDENCE_FACTOR 0.3
 #define CONFIDENCE_FACTOR_FOR_CAPTURE 0.6
@@ -66,16 +66,21 @@ private:
     ofVec3f toPosition(const nite::SkeletonJoint& joint);
     ofMatrix4x4 toMatrix(const nite::SkeletonJoint& joint);
     ofVec3f toWorld(int x,int y,short depth){
-        return ofVec3f (
-            ((x/(float)BUFFER_WIDTH)-0.5)*2*depth*mTanX,
-            ((y/(float)BUFFER_HEIGHT)-0.5)*2*depth*mTanY*-1,
-            -depth
-        );
+        ofVec3f v;
+        toWorld(x,y,depth,v);
+        return v;
+    }
+    inline void toWorld(int x,int y,short depth,ofVec3f& outVector){
+        static const float invWidth=1.0f/BUFFER_WIDTH;
+        static const float invHeight=1.0f/BUFFER_HEIGHT;
+        outVector.x=(x*invWidth-0.5f)*2*depth*mTanX;
+        outVector.y=(y*invHeight-0.5f)*2*depth*mTanY*-1;
+        outVector.z=-depth;
     }
     ofVec2f toDepth(const ofVec3f& pos){
         return ofVec2f(
-           ((pos.x/(mTanX*pos.z*2*-1)   )+0.5)*BUFFER_WIDTH,
-           ((pos.y/(mTanY*pos.z*2*-1)*-1)+0.5)*BUFFER_HEIGHT
+           ((pos.x/(mTanX*pos.z*2*-1)   )+0.5f)*BUFFER_WIDTH,
+           ((pos.y/(mTanY*pos.z*2*-1)*-1)+0.5f)*BUFFER_HEIGHT
         );
     }
 public:

@@ -106,23 +106,18 @@ void ofApp::drawPointCloud(){
     for(int y=0;y<BUFFER_HEIGHT;++y){
         for(int x=0;x<BUFFER_WIDTH;++x){
             openni::DepthPixel depth=depthPixelsBuffer[depthPixels.getPixelIndex(x, y)];
-            const short DEPTH_MAX=5000;//[mm]
+            static const short DEPTH_MAX=5000;//[mm]
             if(depth>DEPTH_MAX || depth==0)
             {
                 depth=DEPTH_MAX;
             }
-            //depth=1000;
-            int colX=0;
-            int colY=0;
-            colX=x;
-            colY=y;
             int colorIndex=colorPixels.getPixelIndex(x, y);
-            const float inv255=1.0/255;
+            static const float inv255=1.0f/255;
             col.r=colorPixelsBuffer[colorIndex+0]*inv255;
             col.g=colorPixelsBuffer[colorIndex+1]*inv255;
             col.b=colorPixelsBuffer[colorIndex+2]*inv255;
-            pos=toWorld(x, y, depth);
-            //pos.x*=-1;
+            //pos=toWorld(x, y, depth);
+            toWorld(x, y, depth,pos);
             mPointCloudMesh.addVertex(pos);
             mPointCloudMesh.addColor(col);
         }
@@ -284,15 +279,12 @@ void ofApp::draw(){
     if(0==depthPixels.size()){
         return;
     }
-    const ofShortPixels& depthPixelsForDebug=mDepthStream.getPixelsRef(1000,4000);
-    mDepthImage.setFromPixels(depthPixelsForDebug);
-    const ofPixels& colorPixels=mColorStream.getPixelsRef();
-    if(0==colorPixels.size()){
-        return;
-    }
-    mColorImage.setFromPixels(colorPixels);
     
     if(mCanDisplayDebug){
+        const ofShortPixels& depthPixelsForDebug=mDepthStream.getPixelsRef(1000,4000);
+        mDepthImage.setFromPixels(depthPixelsForDebug);
+        const ofPixels& colorPixels=mColorStream.getPixelsRef();
+        mColorImage.setFromPixels(colorPixels);
         ofPushStyle();
         // draw depth
         ofSetColor(255);
