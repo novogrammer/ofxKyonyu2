@@ -16,7 +16,7 @@ void ofApp::setupNI2(){
         mDepthStream.start();
         float fovy=ofRadToDeg(mDepthStream.get().getVerticalFieldOfView());
         mCamera.setupPerspective(false,fovy,100,10000);//[mm]
-        mCamera.setAspectRatio(ofGetWidth()/(float)ofGetHeight());
+        mCamera.setAspectRatio(mFbo.getWidth()/(float)mFbo.getHeight());
         cout << "mDepthStream is OK" << endl;
     }
     if (mUserTracker.setup(mDevice)){
@@ -74,7 +74,7 @@ void ofApp::updateOp(){
 
 
 void ofApp::drawPointCloud(){
-    mCamera.begin(ofRectangle(0,0,ofGetWidth(),ofGetHeight()));
+    mCamera.begin(ofRectangle(0,0,mFbo.getWidth(),mFbo.getHeight()));
     ofPushMatrix();
     if(mIsMirror){
         glScalef(-1, 1, 1);
@@ -90,7 +90,7 @@ void ofApp::drawPointCloud(){
     const ofPixels& colorPixels=mColorStream.getPixelsRef();
     
     mPointCloudShader.begin();
-    float size=ofGetHeight()/BUFFER_HEIGHT;
+    float size=mFbo.getHeight()/BUFFER_HEIGHT;
     float sizePerZ=-tan(ofDegToRad(mCamera.getFov())/2)*2*size*mPointSizeFactor;
     mPointCloudShader.setUniform1f("SizePerZ", sizePerZ);
     
@@ -133,7 +133,7 @@ void ofApp::drawPointCloud(){
 }
 
 void ofApp::drawUsers(){
-    mCamera.begin(ofRectangle(0,0,ofGetWidth(),ofGetHeight()));
+    mCamera.begin(ofRectangle(0,0,mFbo.getWidth(),mFbo.getHeight()));
     ofPushMatrix();
     if(mIsMirror){
         glScalef(-1, 1, 1);
@@ -247,6 +247,7 @@ void ofApp::setup(){
     mMaterial.setDiffuseColor(ofFloatColor(0.8,0.8,0.8,1.0));
     mMaterial.setAmbientColor(ofFloatColor(0.8,0.8,0.8,1.0));
     
+    mFbo.allocate(BUFFER_WIDTH, BUFFER_HEIGHT);
     
     setupNI2();
     
@@ -279,7 +280,8 @@ void ofApp::draw(){
     if(0==depthPixels.size()){
         return;
     }
-    
+    mFbo.begin();
+    ofClear(0,0,0);
     if(mCanDisplayDebug){
         const ofShortPixels& depthPixelsForDebug=mDepthStream.getPixelsRef(1000,4000);
         mDepthImage.setFromPixels(depthPixelsForDebug);
@@ -350,7 +352,7 @@ void ofApp::draw(){
     if(mCanDisplayDebug){
         ofPushStyle();
         // draw in 3D
-        mCamera.begin(ofRectangle(0,0,ofGetWidth(),ofGetHeight()));
+        mCamera.begin(ofRectangle(0,0,mFbo.getWidth(),mFbo.getHeight()));
         ofPushMatrix();
         if(mIsMirror){
             glScalef(-1, 1, 1);
@@ -375,6 +377,9 @@ void ofApp::draw(){
         mCamera.end();
         ofPopStyle();
     }
+    mFbo.end();
+    
+    mFbo.draw(0,0,ofGetWidth(),ofGetHeight());
     
 
 }

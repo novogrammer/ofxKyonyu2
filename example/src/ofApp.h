@@ -44,6 +44,7 @@ class ofApp : public ofBaseApp{
     ofLight mLight;
     ofMaterial mMaterial;
     ofImage mUnknownImage;
+    ofFbo mFbo;
     
     UserAndPairOfOpMap mUserAndPairOfOpMap;
     
