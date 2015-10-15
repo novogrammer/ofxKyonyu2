@@ -336,7 +336,7 @@ void ofApp::draw(){
         // draw in 2D
         ofPushView();
         ofCamera overlayCamera=mUserTracker.getOverlayCamera();
-        overlayCamera.begin(ofRectangle(0, 0, mDepthImage.getWidth(), mDepthImage.getHeight()));
+        overlayCamera.begin(ofRectangle(0, BUFFER_HEIGHT/2, BUFFER_WIDTH/2, BUFFER_HEIGHT/2));
         ofDrawAxis(100);
         mUserTracker.draw();
         overlayCamera.end();
