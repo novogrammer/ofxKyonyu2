@@ -14,12 +14,15 @@ ofxNI2を使って巨乳を出せるライブラリです。
 ・exampleで遊ぶ
 
 必要なライブラリ
-・openFrameworks v0.8.4
+・openFrameworks v0.8.4 または v0.9.0
 
 追加するaddon
 ・ofxKyonyu2
-・ofxNI2（SolitaryCipher版で確認）
+・ofxNI2
+  v0.8.4はSolitaryCipher版で動作確認
   https://github.com/SolitaryCipher/ofxNI2
+  v0.9.0は本家が対応してたのでそちらを
+  https://github.com/satoruhiga/ofxNI2
 
 License:
 	Free to use under the New BSD license.
